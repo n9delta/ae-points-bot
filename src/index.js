@@ -38,11 +38,24 @@ client.on('interactionCreate', async interaction => {
 
 	if (!command) return;
 
+	if (!(command.access?.includes(interaction.user.id) || process.env.ADMINS.split(',').includes(interaction.user.id))) {
+		let embed = new MessageEmbed()
+			.setColor('#D0021B')
+			.setDescription('У вас нет прав на выполнение этой команды');
+
+		return interaction.reply({ embeds: [embed], ephemeral: true });
+	}
+
 	try {
 		await command.execute(client, interaction, Users);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'Ошибка при выполнении этой команды!', ephemeral: true });
+		
+		let embed = new MessageEmbed()
+			.setColor('#D0021B')
+			.setDescription('Неизвестная ошибка при выполнение этой команды! Свяжитесь с администратором');
+
+		await interaction.reply({ embeds: [embed], ephemeral: true });
 	}
 });
 
@@ -50,11 +63,9 @@ client.on('interactionCreate', async interaction => {
 * Обработчик сообщений
 */ 
 client.on('messageCreate', async (msg) => {
-	// Если автор не бот, то запустить эвент с шансом 5%
-	if (!msg.author.bot && (Math.random() > 0.8)) {
-		catchEvent(msg);
-	}
-
+	/*
+	* [DEPRECATED]
+	*/
 	// Проверка начинает ли с префикса сообщение
 	const prefix = 'e9';
 	if (!msg.content.startsWith(prefix)) return;
