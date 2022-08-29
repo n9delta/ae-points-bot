@@ -3,30 +3,6 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 const { Users } = require('./../db/dbObjects.js');
 
-/*	left() {
-		this.page = this.page-1 < 0 ? this.pages.length-1 : this.page-1;
-
-		let page = new MessageEmbed();
-
-		return page;
-	}
-
-	right() {
-		this.page = this.page+1 > this.pages.length-1 ? 0 : this.page+1;
-
-		let page = new MessageEmbed();
-
-		return page;
-	}
-
-	home() {
-		this.page = 0;
-
-		let page = new MessageEmbed();
-
-		return page;
-	}*/
-
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('leaderboard')
