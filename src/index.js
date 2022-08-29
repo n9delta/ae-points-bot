@@ -27,7 +27,7 @@ process.on("uncaughtException", (e) => {
 client.once('ready', async () => {
 	console.log( `USER | Ready as ${client.user.username}!`);
 
-	let reloadState = fs.readFileSync( path.join(__dirname, './helpers/reloadState.json'),
+	let reloadState = fs.readFileSync( path.join(__dirname, './db/reloadState.json'),
 		{ encoding: 'utf-8' }
 	);
 	reloadState = JSON.parse(reloadState);
@@ -40,7 +40,7 @@ client.once('ready', async () => {
 			.setDescription('🟢 **Бот успешно перезагружен!**');
 		await message.edit({ embeds: [embed] });
 
-		fs.writeFileSync( path.join(__dirname, './helpers/reloadState.json'),
+		fs.writeFileSync( path.join(__dirname, './db/reloadState.json'),
 			JSON.stringify({ channelId: reloadState.channelId, messageId: reloadState.messageId, answered: true }),
 			{ encoding: 'utf-8' }
 		);

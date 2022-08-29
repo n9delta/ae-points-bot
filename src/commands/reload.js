@@ -15,7 +15,7 @@ module.exports = {
 			.setDescription('🔄 **Перезагрузка бота...**');
 		const message = await i.reply({ embeds: [embed], fetchReply: true });
 
-		fs.writeFileSync(path.join(__dirname, './../helpers/reloadState.json'),
+		fs.writeFileSync(path.join(__dirname, './../db/reloadState.json'),
 			JSON.stringify({ channelId: message.channel.id, messageId: message.id, answered: false }),
 			{ encoding: 'utf-8' }
 		);
