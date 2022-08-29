@@ -14,13 +14,36 @@ module.exports = {
 		.addIntegerOption(o =>
 			o.setName('points')
 				.setDescription('Кол-во поинтов')
-				.setRequired(true)),
+				.setRequired(true))
+		.addStringOption(o =>
+			o.setName('comment')
+				.setDescription('Комментарий')
+				.setRequired(false)),
+	access: [],
 	async execute(client, i) {
-		const user = i.options.getUser('user');
-		const dbUser = Users.findOneUser({ id: user.id });
+		const args = {
+			user: i.options.getUser('user'),
+			points: i.options.getInteger('points'),
+			comment: i.options.getString('comment') ?? '',
+		};
 
-		const points = i.options.getInteger('points');
+		const dbUser = await Users.findOneUser({ id: args.user.id });
 
-		consle.log(dbUser.points, points);
+		const transaction = await Transactions.create({
+			type: 'IN',
+			user: args.user.id,
+			points: args.points,
+			comment: args.comment
+		});
+		
+		dbUser.points += args.points;
+		await dbUser.save();
+
+		const embed = new MessageEmbed()
+			.setColor('#3889C4')
+			.setAuthor({ name: `${i.user.username} | ID: ${transaction.id}`, iconURL: i.user.displayAvatarURL() })
+			.setDescription(`**${args.points > 0 ? 'Добавил' : 'Отнял у'} <@${args.user.id}> \`${Math.abs(args.points)}\` поинтов!**${args.comment ? `\n\n**Комментарий:** \`${args.comment}\`` : ''}`);
+
+		await i.reply({ embeds: [embed] });
 	},
 };

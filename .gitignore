@@ -1,3 +1,4 @@
 src/db/reloadState.json
+database.sqlite
 node_modules
 .env

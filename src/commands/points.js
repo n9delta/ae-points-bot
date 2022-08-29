@@ -18,8 +18,8 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor('#3889C4')
 			.setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
-			.setDescription(`Имеет ${dbUser.points} поинтов!`) 
+			.setDescription(`**Имеет \`${dbUser.points}\` поинтов!**`) 
 	
-		i.reply({ embeds: [embed] });
+		await i.reply({ embeds: [embed] });
 	},
 };
