@@ -25,7 +25,26 @@ process.on("uncaughtException", (e) => {
 });
 
 client.once('ready', async () => {
-	console.log('Ready!');
+	console.log( `USER | Ready as ${client.user.username}!`);
+
+	let reloadState = fs.readFileSync( path.join(__dirname, './helpers/reloadState.json'),
+		{ encoding: 'utf-8' }
+	);
+	reloadState = JSON.parse(reloadState);
+
+	if (reloadState && !reloadState?.answered) {
+		const message = await client.channels.cache.get(reloadState.channelId).messages.fetch(reloadState.messageId);
+
+		const embed = new MessageEmbed()
+			.setColor('#4BBD5C')
+			.setDescription('🟢 **Бот успешно перезагружен!**');
+		await message.edit({ embeds: [embed] });
+
+		fs.writeFileSync( path.join(__dirname, './helpers/reloadState.json'),
+			JSON.stringify({ channelId: reloadState.channelId, messageId: reloadState.messageId, answered: true }),
+			{ encoding: 'utf-8' }
+		);
+	}
 });
 
 /*
