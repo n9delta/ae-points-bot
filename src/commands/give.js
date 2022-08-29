@@ -31,7 +31,8 @@ module.exports = {
 
 		const transaction = await Transactions.create({
 			type: 'IN',
-			user: args.user.id,
+			user: i.user.id,
+			target: args.user.id,
 			points: args.points,
 			comment: args.comment
 		});
