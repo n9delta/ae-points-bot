@@ -1,9 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
 	return sequelize.define('Users', {
-		id: {
+		type: {
 			type: DataTypes.STRING,
-			primaryKey: true,
+			allowNull: false,
 		},
+		comment: DataTypes.STRING,
 		points: {
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
